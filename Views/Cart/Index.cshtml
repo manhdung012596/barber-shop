@@ -1,0 +1,77 @@
+@model List<BarberShop.Models.OrderItem>
+
+@{
+    ViewData["Title"] = "Shopping Cart";
+    decimal total = Model.Sum(i => i.Price * i.Quantity);
+}
+
+<div class="container mt-5">
+    <h1 class="text-center mb-5">Giỏ Hàng Của Bạn</h1>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center">
+            Giỏ hàng của bạn đang trống. <a asp-controller="Product" asp-action="Index">Đi Mua Sắm</a>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-md-8">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Sản Phẩm</th>
+                            <th>Giá</th>
+                            <th>Số Lượng</th>
+                            <th>Tổng</th>
+                            <th>Hành Động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Product?.Name</td>
+                                <td>@item.Price.ToString("C0")</td>
+                                <td>@item.Quantity</td>
+                                <td>@((item.Price * item.Quantity).ToString("C0"))</td>
+                                <td>
+                                    <form asp-action="RemoveFromCart" method="post">
+                                        <input type="hidden" name="productId" value="@item.ProductId" />
+                                        <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4>Tóm Tắt Đơn Hàng</h4>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="text-center mb-4">Tổng Cộng: @total.ToString("C0")</h3>
+                        <form asp-action="Checkout" method="post">
+                            <div class="mb-3">
+                                <label class="form-label">Họ Tên</label>
+                                <input type="text" name="customerName" class="form-control" required />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Địa Chỉ</label>
+                                <textarea name="address" class="form-control" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Số Điện Thoại</label>
+                                <input type="tel" name="phoneNumber" class="form-control" required />
+                            </div>
+                            <button type="submit" class="btn btn-success w-100 btn-lg">Thanh Toán</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

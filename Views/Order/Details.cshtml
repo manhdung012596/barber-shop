@@ -1,0 +1,77 @@
+@model BarberShop.Models.Order
+
+@{
+    ViewData["Title"] = "Chi Tiết Đơn Hàng";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Chi Tiết Đơn Hàng #@Model.Id</h3>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h5 class="text-muted">Thông Tin Khách Hàng</h5>
+                    <p><strong>Họ Tên:</strong> @Model.CustomerName</p>
+                    <p><strong>Số Điện Thoại:</strong> @Model.PhoneNumber</p>
+                    <p><strong>Địa Chỉ:</strong> @Model.Address</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h5 class="text-muted">Thông Tin Đơn Hàng</h5>
+                    <p><strong>Ngày Đặt:</strong> @Model.OrderDate.ToString("dd/MM/yyyy HH:mm")</p>
+                    <p><strong>Tổng Tiền:</strong> <span class="text-danger fw-bold">@Model.TotalAmount.ToString("N0") VNĐ</span></p>
+                </div>
+            </div>
+
+            <h5 class="mb-3">Danh Sách Sản Phẩm</h5>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Sản Phẩm</th>
+                            <th class="text-center">Số Lượng</th>
+                            <th class="text-end">Đơn Giá</th>
+                            <th class="text-end">Thành Tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.OrderItems)
+                        {
+                            <tr>
+                                <td>
+                                    @if (item.Product != null)
+                                    {
+                                        <div class="d-flex align-items-center">
+                                            @if (!string.IsNullOrEmpty(item.Product.ImageUrl))
+                                            {
+                                                <img src="@item.Product.ImageUrl" alt="@item.Product.Name" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;" class="rounded">
+                                            }
+                                            <span>@item.Product.Name</span>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <span>Sản phẩm không còn tồn tại</span>
+                                    }
+                                </td>
+                                <td class="text-center">@item.Quantity</td>
+                                <td class="text-end">@item.Price.ToString("N0") VNĐ</td>
+                                <td class="text-end">@((item.Price * item.Quantity).ToString("N0")) VNĐ</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot class="table-light">
+                        <tr>
+                            <td colspan="3" class="text-end fw-bold">Tổng Cộng:</td>
+                            <td class="text-end fw-bold text-danger">@Model.TotalAmount.ToString("N0") VNĐ</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer text-end">
+            <a asp-action="Index" asp-route-phoneNumber="@Model.PhoneNumber" class="btn btn-secondary">Quay Lại</a>
+        </div>
+    </div>
+</div>

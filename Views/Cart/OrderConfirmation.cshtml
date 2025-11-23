@@ -1,0 +1,18 @@
+@model BarberShop.Models.Order
+
+@{
+    ViewData["Title"] = "Order Confirmation";
+}
+
+<div class="container mt-5 text-center">
+    <div class="card p-5">
+        <div class="card-body">
+            <i class="fas fa-check-circle fa-5x text-success mb-4"></i>
+            <h1 class="card-title text-success">Đặt Hàng Thành Công!</h1>
+            <p class="lead">Cảm ơn bạn đã mua hàng, @Model.CustomerName.</p>
+            <p>Mã đơn hàng của bạn là: <strong>#@Model.Id</strong></p>
+            <p>Tổng tiền: <strong>@Model.TotalAmount.ToString("C0")</strong></p>
+            <a asp-controller="Product" asp-action="Index" class="btn btn-primary mt-3">Tiếp Tục Mua Sắm</a>
+        </div>
+    </div>
+</div>
