@@ -41,7 +41,7 @@ Khách hàng có thể kiểm tra lịch sử mua hàng:
 ## 🛠 Công Nghệ Sử Dụng
 
 - **Framework**: ASP.NET Core MVC
-- **Database**: SQLite (`barbershop.db`)
+- **Database**: SQL Server (`barbershop.db`)
 - **ORM**: Entity Framework Core
 - **Session**: Sử dụng để lưu trữ Giỏ hàng tạm thời.
 
