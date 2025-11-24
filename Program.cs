@@ -2,7 +2,11 @@ using BarberShop.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+{
+    Args = args,
+    WebRootPath = "Content"
+});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
