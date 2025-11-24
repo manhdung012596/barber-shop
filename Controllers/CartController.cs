@@ -3,6 +3,8 @@ using BarberShop.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BarberShop.Controllers
 {
@@ -69,6 +71,7 @@ namespace BarberShop.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Checkout(string customerName, string address, string phoneNumber)
         {
             var cart = GetCart();
@@ -79,6 +82,7 @@ namespace BarberShop.Controllers
 
             var order = new Order
             {
+                UserId = User.FindFirstValue(ClaimTypes.NameIdentifier),
                 CustomerName = customerName,
                 Address = address,
                 PhoneNumber = phoneNumber,

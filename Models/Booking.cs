@@ -6,6 +6,8 @@ namespace BarberShop.Models
     {
         public int Id { get; set; }
 
+        public string? UserId { get; set; }
+        
         [Required]
         public string CustomerName { get; set; } = string.Empty;
 

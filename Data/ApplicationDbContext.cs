@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using BarberShop.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace BarberShop.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -28,7 +29,9 @@ namespace BarberShop.Data
 
             modelBuilder.Entity<Product>().HasData(
                 new Product { Id = 1, Name = "Sáp Vuốt Tóc Cao Cấp", Description = "Giữ nếp mạnh mẽ, độ bóng thấp.", Price = 350000, Stock = 50, ImageUrl = "/img/Pomade.png" },
-                new Product { Id = 2, Name = "Dầu Dưỡng Râu", Description = "Nuôi dưỡng và làm mềm râu.", Price = 250000, Stock = 30, ImageUrl = "/img/Beard Oil.jpg" }
+                new Product { Id = 2, Name = "Dầu Dưỡng Râu", Description = "Nuôi dưỡng và làm mềm râu.", Price = 250000, Stock = 30, ImageUrl = "/img/Beard Oil.jpg" },
+                new Product { Id = 3, Name = "Gôm Xịt Tóc", Description = "Giữ nếp tóc lâu dài, tự nhiên.", Price = 180000, Stock = 40, ImageUrl = "/img/hairspray.png" },
+                new Product { Id = 4, Name = "Kem Cạo Râu", Description = "Bọt mịn, giúp cạo râu dễ dàng và bảo vệ da.", Price = 120000, Stock = 60, ImageUrl = "/img/shaving_cream.png" }
             );
         }
     }

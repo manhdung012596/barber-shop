@@ -33,10 +33,34 @@
                             <a class="nav-link" asp-area="" asp-controller="Booking" asp-action="Index">Đặt Lịch</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Order" asp-action="Index">Tra Cứu Đơn Hàng</a>
+                            <a class="nav-link" asp-area="" asp-controller="Order" asp-action="Index">Tra Cứu</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav">
+                        @using Microsoft.AspNetCore.Identity
+                        @inject SignInManager<IdentityUser> SignInManager
+                        @inject UserManager<IdentityUser> UserManager
+
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a  class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index" title="Welcome">Xin chào @User.Identity?.Name!</a>
+                            </li>
+                            <li class="nav-item">
+                                <form  class="form-inline" asp-area="" asp-controller="Account" asp-action="Logout" method="post">
+                                    <button  type="submit" class="nav-link btn btn-link text-light">Đăng xuất</button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Account" asp-action="Register">Đăng ký</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Account" asp-action="Login">Đăng nhập</a>
+                            </li>
+                        }
                          <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-cart"></i> Giỏ Hàng</a>
                         </li>

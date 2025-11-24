@@ -1,24 +1,25 @@
-@model IEnumerable<BarberShop.Models.Order>
+@model BarberShop.Models.LookupViewModel
 
 @{
-    ViewData["Title"] = "Tra Cứu Đơn Hàng";
+    ViewData["Title"] = "Tra Cứu";
 }
 
 <div class="container mt-5">
-    <h2 class="text-center mb-4">Tra Cứu Đơn Hàng</h2>
+    <h2 class="text-center mb-4">Tra Cứu Đơn Hàng & Đặt Lịch</h2>
 
     <div class="row justify-content-center mb-5">
         <div class="col-md-6">
             <form asp-action="Index" method="get" class="d-flex">
-                <input type="text" name="phoneNumber" class="form-control me-2" placeholder="Nhập số điện thoại của bạn..." value="@ViewBag.PhoneNumber" required />
+                <input type="text" name="phoneNumber" class="form-control me-2" placeholder="Nhập số điện thoại của bạn..." value="@Model.PhoneNumber" />
                 <button type="submit" class="btn btn-primary">Tìm Kiếm</button>
             </form>
         </div>
     </div>
 
-    @if (Model != null && Model.Any())
+    @if (Model.Orders != null && Model.Orders.Any())
     {
-        <div class="table-responsive">
+        <h3 class="mb-3">Đơn Hàng</h3>
+        <div class="table-responsive mb-5">
             <table class="table table-striped table-hover">
                 <thead class="table-dark">
                     <tr>
@@ -30,7 +31,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model)
+                    @foreach (var item in Model.Orders)
                     {
                         <tr>
                             <td>#@item.Id</td>
@@ -46,10 +47,41 @@
             </table>
         </div>
     }
-    else if (ViewBag.PhoneNumber != null)
+
+    @if (Model.Bookings != null && Model.Bookings.Any())
+    {
+        <h3 class="mb-3">Lịch Đặt</h3>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-success">
+                    <tr>
+                        <th>Mã Lịch</th>
+                        <th>Ngày Hẹn</th>
+                        <th>Khách Hàng</th>
+                        <th>Dịch Vụ</th>
+                        <th>Trạng Thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Bookings)
+                    {
+                        <tr>
+                            <td>#@item.Id</td>
+                            <td>@item.AppointmentTime.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>@item.CustomerName</td>
+                            <td>@item.Service?.Name</td>
+                            <td><span class="badge bg-success">Đã Đặt</span></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+    @if ((Model.Orders == null || !Model.Orders.Any()) && (Model.Bookings == null || !Model.Bookings.Any()) && !string.IsNullOrEmpty(Model.PhoneNumber))
     {
         <div class="alert alert-warning text-center">
-            Không tìm thấy đơn hàng nào với số điện thoại: <strong>@ViewBag.PhoneNumber</strong>
+            Không tìm thấy đơn hàng hoặc lịch đặt nào với số điện thoại: <strong>@Model.PhoneNumber</strong>
         </div>
     }
 </div>

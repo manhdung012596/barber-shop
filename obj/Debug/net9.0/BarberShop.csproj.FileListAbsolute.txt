@@ -208,3 +208,5 @@ D:\barber-shop\bin\Debug\net9.0\BarberShop.runtimeconfig.json
 D:\barber-shop\bin\Debug\net9.0\BarberShop.pdb
 D:\barber-shop\obj\Debug\net9.0\BarberShop.genruntimeconfig.cache
 D:\barber-shop\obj\Debug\net9.0\ref\BarberShop.dll
+D:\barber-shop\obj\Debug\net9.0\BarberShop.sourcelink.json
+D:\barber-shop\bin\Debug\net9.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll

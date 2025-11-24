@@ -2,6 +2,7 @@ using BarberShop.Data;
 using BarberShop.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace BarberShop.Controllers
 {
@@ -17,19 +18,46 @@ namespace BarberShop.Controllers
         // GET: Order
         public async Task<IActionResult> Index(string phoneNumber)
         {
-            if (string.IsNullOrWhiteSpace(phoneNumber))
+            var viewModel = new LookupViewModel();
+
+            if (User.Identity.IsAuthenticated && string.IsNullOrEmpty(phoneNumber))
             {
-                return View(new List<Order>());
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                viewModel.Orders = await _context.Orders
+                    .Where(o => o.UserId == userId)
+                    .OrderByDescending(o => o.OrderDate)
+                    .ToListAsync();
+                
+                viewModel.Bookings = await _context.Bookings
+                    .Where(b => b.UserId == userId)
+                    .Include(b => b.Service)
+                    .OrderByDescending(b => b.AppointmentTime)
+                    .ToListAsync();
+
+                return View(viewModel);
             }
 
+            if (string.IsNullOrWhiteSpace(phoneNumber))
+            {
+                return View(viewModel);
+            }
+
+            viewModel.PhoneNumber = phoneNumber;
+
             // Normalize phone number if needed, for now exact match
-            var orders = await _context.Orders
+            viewModel.Orders = await _context.Orders
                 .Where(o => o.PhoneNumber.Contains(phoneNumber))
                 .OrderByDescending(o => o.OrderDate)
                 .ToListAsync();
 
+            viewModel.Bookings = await _context.Bookings
+                .Where(b => b.PhoneNumber.Contains(phoneNumber))
+                .Include(b => b.Service)
+                .OrderByDescending(b => b.AppointmentTime)
+                .ToListAsync();
+
             ViewBag.PhoneNumber = phoneNumber;
-            return View(orders);
+            return View(viewModel);
         }
 
         // GET: Order/Details/5
